@@ -1,0 +1,27 @@
+[project]
+name = "application-for-analyzing-banking-transactions"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Nikolay Kydrushov",email = "nnikolay2909@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pandas (>=2.3.2,<3.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)",
+    "openpyxl (>=3.1.5,<4.0.0)",
+    "requests (>=2.32.5,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.lint.dependencies]
+flake8 = "^7.3.0"
+black = "^25.1.0"
+isort = "^6.0.1"
+mypy = "^1.17.1"
+
