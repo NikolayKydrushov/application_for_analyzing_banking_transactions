@@ -193,6 +193,7 @@ def get_currency_rates() -> Dict[str, float]:
 
             logger.info(f"Получены курсы валют: {list(filtered_rates.keys())}")
             return filtered_rates
+
     except requests.exceptions.Timeout:
         logger.error("Таймаут при получении курсов валют")
     except requests.exceptions.ConnectionError:
