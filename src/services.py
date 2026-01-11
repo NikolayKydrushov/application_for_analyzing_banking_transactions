@@ -60,8 +60,7 @@ def investment_bank(month: str, transactions: List[Dict[str, Any]], limit: int) 
 
                 if investment > 0:
                     total_investment += investment
-                    logger.debug(
-                        f"Транзакция {op_date.date()}: {abs_amount} ₽ -> {rounded_amount} ₽, отложено: {investment} ₽")
+                    logger.debug(f"Транзакция {op_date.date()}: {abs_amount} ₽ -> {rounded_amount} ₽, отложено: {investment} ₽")
 
         except (ValueError, KeyError) as e:
             logger.warning(f"Ошибка обработки транзакции: {e}")
