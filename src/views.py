@@ -43,17 +43,20 @@ STOCKS_API_KEY = os.getenv("STOCKS_API_KEY")
 
 def time_response() -> str | None:
     """Возвращает приветствие в зависимости от времени суток"""
-    date_hour = int(datetime.now().hour)
+    try:
+        date_hour = int(datetime.now().hour)
+        if 6 < date_hour <= 12:
+            return "Доброе утро"
+        elif 12 < date_hour <= 18:
+            return "Добрый день"
+        elif 18 < date_hour <= 24:
+            return "Добрый вечер"
+        elif 0 <= date_hour <= 6:
+            return "Доброй ночи"
 
-    if 6 < date_hour <= 12:
-        return "Доброе утро"
-    elif 12 < date_hour <= 18:
-        return "Добрый день"
-    elif 18 < date_hour <= 24:
-        return "Добрый вечер"
-    elif 0 <= date_hour <= 6:
-        return "Доброй ночи"
-    return None
+    except ValueError as e:
+        logger.error(f"Ошибка при фильтрации данных: {e}")
+        return None
 
 
 def filter_data_by_date(df: pd.DataFrame, target_date: str) -> pd.DataFrame:
@@ -193,6 +196,7 @@ def get_currency_rates() -> Dict[str, float]:
 
             logger.info(f"Получены курсы валют: {list(filtered_rates.keys())}")
             return filtered_rates
+
     except requests.exceptions.Timeout:
         logger.error("Таймаут при получении курсов валют")
     except requests.exceptions.ConnectionError:
@@ -288,7 +292,11 @@ def create_summary_json(df: pd.DataFrame, target_date: str) -> Dict:
         Словарь с данными в требуемом формате
     """
     # Фильтруем данные по дате
-    filtered_df = filter_data_by_date(df, target_date)
+    try:
+        filtered_df = filter_data_by_date(df, target_date)
+    except Exception as e:
+        logger.error(f"Ошибка при фильтрации данных: {e}")
+        filtered_df = pd.DataFrame(columns=df.columns)
 
     # Получаем данные для JSON
     greeting = time_response()
