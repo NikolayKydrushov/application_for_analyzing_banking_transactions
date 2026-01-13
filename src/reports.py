@@ -27,9 +27,8 @@ def report_writer(filename: Optional[str] = None):
             if filename:
                 file_name = filename if filename.endswith('.json') else f"{filename}.json"
             else:
-                # Генерация имени файла по умолчанию
-                current_date = datetime.now().strftime("%Y%m%d_%H%M%S")
-                file_name = f"{func.__name__}_{current_date}.json"
+                # Всегда используем фиксированное имя файла
+                file_name = "report_result.json"
 
             # Записываем результат в файл
             try:

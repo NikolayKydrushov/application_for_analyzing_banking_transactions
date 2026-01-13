@@ -1,3 +1,4 @@
+import math
 from datetime import datetime
 from typing import Dict, List, Any
 import logging
@@ -11,9 +12,9 @@ def investment_bank(month: str, transactions: List[Dict[str, Any]], limit: int) 
        Рассчитывает сумму для инвесткопилки через округление трат.
 
        Args:
-           month: Месяц, для которого рассчитывается отложенная сумма, строка в формате 'YYYY-MM' (например, '2024-03')
+           month: Месяц, для которого рассчитывается отложенная сумма, строка в формате 'DD.MM.YYYY HH:MM:SS'
            transactions: Список словарей с информацией о:
-               - 'Дата операции': дата в формате 'YYYY-MM-DD'
+               - 'Дата операции': дата в формате 'DD.MM.YYYY HH:MM:SS'
                - 'Сумма операции': сумма транзакции в оригинальной валюте (число)
            limit: Предел для округления суммы операций - целое число (10, 50, 100 и т.д.)
 
@@ -21,14 +22,18 @@ def investment_bank(month: str, transactions: List[Dict[str, Any]], limit: int) 
            Сумма, которую удалось бы отложить в инвесткопилку
     """
 
-    total_investment = 0.0
+    total_investment = 0.00
 
     try:
         # Проверяем корректность месяца
         datetime.strptime(month, '%Y-%m')
     except ValueError:
-        logger.error(f"Неверный формат месяца: {month}. Ожидается 'YYYY-MM'")
-        return 0.0
+        logger.error(f"Неверный формат месяца: {month}. Ожидается 'DD.MM.YYYY HH:MM:SS'")
+        return 0.00
+
+    if limit <= 0:
+        logger.warning(f"Лимит должен быть положительным числом. Получено: {limit}")
+        return 0.00
 
     for transaction in transactions:
         try:
@@ -53,7 +58,7 @@ def investment_bank(month: str, transactions: List[Dict[str, Any]], limit: int) 
                 abs_amount = abs(amount)
 
                 # Округляем до ближайшего кратного limit
-                rounded_amount = ((abs_amount + limit - 1) // limit) * limit
+                rounded_amount = math.ceil(abs_amount / limit) * limit
 
                 # Вычисляем разницу (инвестируемая сумма)
                 investment = rounded_amount - abs_amount
@@ -67,4 +72,4 @@ def investment_bank(month: str, transactions: List[Dict[str, Any]], limit: int) 
             continue
 
     logger.info(f"За месяц {month} с лимитом округления {limit} ₽ отложено: {total_investment:.2f} ₽")
-    return total_investment
+    return round(total_investment, 2)

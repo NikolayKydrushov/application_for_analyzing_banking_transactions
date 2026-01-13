@@ -21,28 +21,28 @@ if __name__ == "__main__":
         df = pd.read_excel(OPERATIONS_FILE_PATH, sheet_name='Отчет по операциям')
 
         # Использование функции без указания даты (используется текущая дата)
-        # result = spending_by_category(df, 'Супермаркеты')
-        # print(f"Найдено транзакций: {len(result)}")
+        result = spending_by_category(df, 'Супермаркеты')
+        print(f"Найдено транзакций: {len(result)}")
 
         # Использование функции с указанием даты
         result_with_date = spending_by_category(df, 'Супермаркеты', date='31.12.2021')
         print(f"Найдено транзакций с указанной датой: {len(result_with_date)}")
 
-        # transactions = df[['Дата операции', 'Сумма операции']].to_dict('records')
-        #
-        # # Пример параметров для функции
-        # month = '2021-12'  # месяц в формате YYYY-MM
-        # limit = 10  # лимит округления
-        #
-        # # Вызов функции investment_bank
-        # investment_result = investment_bank(month, transactions, limit)
-        # print(f"\nРезультат работы investment_bank: {investment_result:.2f} ₽")
+        transactions = df[['Дата операции', 'Сумма операции']].to_dict('records')
+
+        # Пример параметров для функции
+        month = '2021-12'  # месяц в формате YYYY-MM
+        limit = 10  # лимит округления
+
+        # Вызов функции investment_bank
+        investment_result = investment_bank(month, transactions, limit)
+        print(f"\nРезультат работы investment_bank: {investment_result:.2f} ₽")
 
         # Тестовый вызов
-        # test_date = '2021-12-31 23:59:59'
-        # response = create_summary_json(df, test_date)
-        #
-        # print(json.dumps(response, ensure_ascii=False, indent=2))
+        test_date = '2021-12-31 23:59:59'
+        response = create_summary_json(df, test_date)
+
+        print(json.dumps(response, ensure_ascii=False, indent=2))
 
     except FileNotFoundError:
         print(f"Файл не найден: {OPERATIONS_FILE_PATH}")

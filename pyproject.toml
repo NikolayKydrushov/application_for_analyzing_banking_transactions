@@ -26,3 +26,25 @@ black = "^25.1.0"
 isort = "^6.0.1"
 mypy = "^1.17.1"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest-cov = "^7.0.0"
+
+[tool.black]
+line-length = 119
+exclude = '''
+/(
+    \.git
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 119
+
+[tool.mypy]
+disallow_untyped_defs = true
+warn_return_any = true
+exclude = [
+    "^venv/",
+]
